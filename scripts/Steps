@@ -1,0 +1,55 @@
+HelloProducer : This is an example of sending simple string message to topic
+
+
+ls /brokers/ids
+ls /brokers/topics
+get /controller
+
+-----------------------------------------------
+KAFKA-CONSOLE-CONSUMER
+Print value with key
+----------------------
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning --property print.key=true
+
+kafka-console-consumer.sh \
+--bootstrap-server localhost:9092 --topic test --from-beginning \
+--formatter kafka.tools.DefaultMessageFormatter \
+--property print.key=true
+
+kafka-console-consumer.sh \
+--bootstrap-server localhost:9092 --topic test --from-beginning \
+--formatter kafka.tools.DefaultMessageFormatter \
+--property print.key=true
+--property print.value=true
+
+kafka-console-consumer.sh \
+--bootstrap-server localhost:9092 --topic test --from-beginning \
+--formatter kafka.tools.DefaultMessageFormatter \
+--property print.key=true
+--property print.value=true
+--property key.deserializer=org.apache.kafka.common.serialization.IntegerDeserializer
+
+kafka-console-consumer.sh \
+--bootstrap-server localhost:9092 --topic test --from-beginning \
+--formatter kafka.tools.DefaultMessageFormatter \
+--property print.key=true
+--property print.value=true
+--property key.deserializer=org.apache.kafka.common.serialization.IntegerDeserializer
+--max-messages 10
+
+-----------------------------------------------------------------------------------------------------------------
+
+TIMESTAMP
+Broker Configuration
+Add the following two configurations to broker
+message.timestamp.type=CreateTime|LogAppendTime|ProcessTime
+max.message.time.difference.ms=Long.MaxValue
+
+Add a time field to both ProducerRecord and ConsumerRecord
+-If user specify the timestamp for a ProducerRecord, the ProducerRecord will be sent with this timestamp.
+-If user does not specify the timestamp for a ProducerRecord, the producer stamp the ProducerRecord with current time.
+-ConsumerRecord will have the timestamp of the message that were stored on broker.
+
+Add a timestamp field to RecordMetadata
+-The timestamp in record metadata will be LongAppendTime if it is returned from broker, or it will be the timestamp set by user in ProducerRecord.
+- When producer invodes the callback for a message, the timestamp will be available through RecordMetadata.

@@ -1,0 +1,33 @@
+HelloProducer2 : This is an example of sending employee record to topic. And here, JsonSerializer is being used to serialize value.
+-----------------------------------------------------------------------------------------------------------------------------------
+
+1) Created Employee Class inside tu.cit.examples.kafkaapis
+2) Create serde package
+3) Create JsonSerializer to serialize Employee Object
+4) Write HelloProducer2 class
+
+EXTRA DEPENDENCIES REQUIRED : Add these in pom.xml, clean and refresh Maven
+<dependency>
+    <groupId>commons-lang</groupId>
+    <artifactId>commons-lang</artifactId>
+    <version>2.5</version>
+</dependency>
+
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.11.0</version>
+</dependency>
+
+--------------------------------------------------------------------------------------------
+Consume student Records from employee topic
+kafka-console-consumer.sh --bootstrap-server localhost:9092 \
+--topic student --from-beginning --formatter kafka.tools.DefaultMessageFormatter \
+--property print.key=true
+--property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 \
+--topic student --partition 1 --offset 0 \
+--formatter kafka.tools.DefaultMessageFormatter \
+--property print.key=true
+--property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer
